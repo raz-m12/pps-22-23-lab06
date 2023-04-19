@@ -22,8 +22,8 @@ object Solitaire extends App:
     private type Position = (Int, Int)
     private val moves = List((-3, 0), (-2, 2), (0, 3), (2, 2), (3, 0), (2, -2), (0, -3), (-2, -2))
 
-    val height = 7
-    val width = 5
+    private val height = 7
+    private val width = 5
     private val toPlace = height * width
     private var solCount: Int = 0
     def placeMarks(n: (Int, Int) = (height, width)): Unit =
