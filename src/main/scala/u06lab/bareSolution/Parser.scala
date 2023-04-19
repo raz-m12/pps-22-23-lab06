@@ -1,4 +1,4 @@
-package u06lab.code
+package u06lab.bareSolution
 
 /** Consider the Parser example shown in previous lesson. Analogously to NonEmpty, create a mixin NotTwoConsecutive,
   * which adds the idea that one cannot parse two consecutive elements which are equal. Use it (as a mixin) to build
@@ -6,12 +6,13 @@ package u06lab.code
   * together!!
   */
 
-/* TODO RV use a trait instead? */
 abstract class Parser[T]:
   def parse(t: T): Boolean // is the token accepted?
   def end: Boolean // is it ok to end here
   def parseAll(seq: Seq[T]): Boolean = (seq forall parse) & end // note &, not &&
 
+object Parsers:
+  val todo = ??? // put the extensions here..
 class BasicParser(chars: Set[Char]) extends Parser[Char]:
   override def parse(t: Char): Boolean = chars.contains(t)
   override def end: Boolean = true
@@ -26,30 +27,10 @@ trait NonEmpty[T] extends Parser[T]:
 class NonEmptyParser(chars: Set[Char]) extends BasicParser(chars) with NonEmpty[Char]
 
 trait NotTwoConsecutive[T] extends Parser[T]:
-  private var twoConsecutive = false
-  private var previous: Option[T] = None
-  abstract override def parse(t: T): Boolean =
-    if(previous.isDefined && t == previous.get)
-      twoConsecutive = true;
-    previous = Option(t)
-    super.parse(t)
+  val todo = ???
+// ???
 
-  abstract override def end: Boolean = !twoConsecutive && super.end
-
-class NotTwoConsecutiveParser(chars: Set[Char]) extends BasicParser(chars) with NotTwoConsecutive[Char]
-
-trait ShorterThanN[T](val n: Int) extends Parser[T]:
-  private var counter = 0
-  abstract override def parse(t: T): Boolean =
-    counter = counter + 1
-    super.parse(t)
-
-  abstract override def end: Boolean = counter <= n && super.end
-
-class ShorterThanNParser(chars: Set[Char], n: Int) extends BasicParser(chars) with ShorterThanN[Char](n)
-
-extension (s: String)
-  def charParser: BasicParser = BasicParser(Set.from(s.toCharArray))
+class NotTwoConsecutiveParser(chars: Set[Char]) extends BasicParser(chars) // with ????
 
 @main def checkParsers(): Unit =
   def parser = new BasicParser(Set('a', 'b', 'c'))
@@ -75,13 +56,7 @@ extension (s: String)
   println(parserNTCNE.parseAll("XYYZ".toList)) // false
   println(parserNTCNE.parseAll("".toList)) // false
 
-  def sparser: Parser[Char] = "abc".charParser
+  def sparser: Parser[Char] = ??? // "abc".charParser()
   println(sparser.parseAll("aabc".toList)) // true
   println(sparser.parseAll("aabcdc".toList)) // false
   println(sparser.parseAll("".toList)) // true
-
-  def shorter: Parser[Char] = ShorterThanNParser(Set('a', 'b', 'c'), 3)
-  println(shorter.parseAll("abc".toList)) // true
-  println(shorter.parseAll("aacc".toList)) // false
-  println(shorter.parseAll("bb".toList)) // true
-
