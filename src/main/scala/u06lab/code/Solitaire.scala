@@ -7,6 +7,10 @@ object Solitaire extends App:
     extension (p: Position)
       private def +(q: Position): Position = (p._1 + q._1, p._2  + q._2)
       private def inside(board: Position): Boolean = p._1 >= 0 && p._1 < board._1 && p._2 >= 0 && p._2 < board._2
+      private def index(): Int = p._1 * width + p._2
+
+    extension (index: Int)
+      private def position(): Position = (index / width, index % width)
 
     extension (arr: Array[Int])
       private def at(p: Position): Int =
@@ -32,7 +36,7 @@ object Solitaire extends App:
     private def findSolution(campo: Array[Int], current: Position): Unit =
 
       // 8 possible moves
-      for (i <- 0 until 8)
+      for (i <- moves.indices)
 
         // calculate next cell to place number
         val nextMove = current + moves(i)
