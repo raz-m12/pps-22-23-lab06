@@ -55,7 +55,7 @@ object Solitaire extends App:
 
     def render(si: Array[Int]): String =
       solCount = solCount + 1
-      println(s"sol ${solCount}")
+      println(s"sol $solCount")
 
       val positions = si.toPositions
       val rows =
