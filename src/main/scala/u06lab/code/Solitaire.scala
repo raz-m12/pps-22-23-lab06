@@ -1,6 +1,7 @@
 package u06lab.code
 
 import u06lab.code.Solitaire.Solitaire.placeMarks
+import scala.annotation.targetName
 
 object Solitaire extends App:
   object Solitaire:
@@ -26,7 +27,7 @@ object Solitaire extends App:
     private val toPlace = height * width
     private var solCount: Int = 0
     def placeMarks(n: (Int, Int) = (height, width)): Unit =
-      var campo = Array.fill(n._1 * n._2)(0)
+      val campo = Array.fill(n._1 * n._2)(0)
 
       val initial = (Math.ceil(height/2).toInt, Math.ceil(width/2).toInt)
 
@@ -34,17 +35,16 @@ object Solitaire extends App:
       findSolution(campo, initial)
 
 
-    
+
     private def findSolution(campo: Array[Int], current: Position): Unit =
 
       for (i <- moves.indices)
-
         val nextMove = current + moves(i)
         if(nextMove.inside(height, width))
           val next = nextMove.index()
           val cur = current.index()
 
-          if (campo.emptyAt(next))  // is currently empty
+          if (campo.emptyAt(next))
             campo(next) = campo(cur) + 1
             if campo(next) < toPlace then
               findSolution(campo, nextMove)
@@ -57,7 +57,7 @@ object Solitaire extends App:
       solCount = solCount + 1
       println(s"sol ${solCount}")
 
-      val positions = si.toPositions.toSeq
+      val positions = si.toPositions
       val rows =
         for y <- 0 until height
             row = for x <- 0 until width
